@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="sidebar">
+    <div *ngFor="let concert of concerts" class="card">
+      <h3>{{ concert.artist.name }}</h3>
+      <p>{{ concert.venue.name }} - {{ concert.date }}</p>
+      <p [ngClass]="{'sold-out': concert.status === 'Sold out', 'available': concert.status === 'Available'}">
+        {{ concert.status }}
+      </p>
+    </div>
+  </div>
+  <div class="map-section">
+    <h1>Encuentra conciertos <span class="resaltado">cercanos</span></h1>
+    <google-map
+      height="91%"
+      width="370%"
+      [center]="center"
+      [zoom]="13"
+      [options]="mapOptions"
+      class="mapa-estilizado">
+      <map-marker [position]="currentUser.location"
+                  [icon]="userIcon"
+                  *ngIf="currentUser" >
+      </map-marker>
+      <map-marker
+        *ngFor="let concert of concerts"
+        [position]="concert.venue.location"
+        [icon]="customIcon"
+        #marker="mapMarker"
+        (mapClick)="openConcertInfo(concert, marker)">
+      </map-marker>
+      <map-info-window class="concert-details">
+        <div>
+          <h3>{{ concertSelected.artist.name }}</h3>
+          <p>{{ concertSelected.venue.name }} - {{ concertSelected.date }}</p>
+          <p><a href="https://www.youtube.com/">lolazo</a></p>
+        </div>
+      </map-info-window>
+    </google-map>
+  </div>
+</div>
+<p>concert-map works!</p>
