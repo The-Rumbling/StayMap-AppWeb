@@ -9,7 +9,7 @@ import {User} from '../../../users/model/user.entity';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
-  selector: 'app-concert-management',
+  selector: 'app-concert-view',
   imports: [
     MatButton,
     NgIf,
