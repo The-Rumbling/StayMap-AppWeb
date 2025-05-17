@@ -10,7 +10,6 @@ const concertResourceEndpoint = environment.concertsEndpointPath || '';
   providedIn: 'root'
 })
 export class ConcertService extends BaseService<Concert> {
-
   constructor() {
     super();
     this.resourceEndpoint = concertResourceEndpoint;
@@ -25,14 +24,19 @@ export class ConcertService extends BaseService<Concert> {
 
         return concertsArray.map((item: any) => new Concert({
           id: Number(item.id),
-          artistName: [item.artist?.name || ''],
-          genre: [item.artist?.genre || ''],
+          artist: {
+            name: item.artist?.name || '',
+            genre: item.artist?.genre || ''
+          },
           image: item.image || '',
           description: item.description || '',
           date: item.date || '',
-          venueName: item.venue?.name || '',
-          venueAddress: item.venue?.address || '',
-          venueLocation: item.venue?.location || { lat: 0, lng: 0 }
+          venue: {
+            name: item.venue?.name || '',
+            address: item.venue?.address || '',
+            location: item.venue?.location || { lat: 0, lng: 0 }
+          },
+          status: item.status || ''
         }));
       }),
       catchError(this.handleError)
