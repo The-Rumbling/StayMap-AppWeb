@@ -2,11 +2,22 @@ export interface ConcertResponse {
   data: ConcertResource[];
 }
 
-export interface ConcertResource{
-  id: number;
-  artist: [{name: string, genre: string}];
-  venue: {name: string, address: string, location: {lat: number, lng: number}};
-  date: string;
+export interface ConcertResource {
+  id: number | string;
+  artist: {
+    name: string;
+    genre: string;
+  };
   image: string;
   description: string;
+  date: string;
+  status?: string;
+  venue: {
+    name: string;
+    address: string;
+    location: {
+      lat: number;
+      lng: number;
+    };
+  };
 }
