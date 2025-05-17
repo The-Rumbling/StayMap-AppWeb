@@ -1,0 +1,82 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  background-color: #000;
+}
+
+.logo-section .logo {
+  max-height: 75px ;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #000;
+  color: white;
+  margin-top: 30px;
+  padding: 0 60px;
+}
+
+.nav-links {
+  display: flex;
+  gap:13rem;
+
+  .nav-link {
+    font-size: 20px;
+    padding: 0.5rem;
+    border-radius: 8px;
+
+    &.active,
+    &:hover {
+      background-color: #000;
+      color: #CB6CE6;
+    }
+  }
+}
+
+.search-login-section {
+  display: flex;
+
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0;
+}
+
+.nav-links a.active-link {
+  color: #CB6CE6;
+}
+
+.button-login-container{
+  background-color: #CB6CE6;
+  border-radius: 4rem;
+}
+
+.login-button {
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0.2rem;
+}
+
+.user-profile-image{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+.mat-input-element {
+  border-radius: 50px;
+}
+
+.mat-form-field-underline {
+  display: none;
+}

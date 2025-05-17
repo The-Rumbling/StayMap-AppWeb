@@ -1,0 +1,25 @@
+<body>
+<div class="container">
+  <div class="left">
+    <img src="https://raw.githubusercontent.com/The-Rumbling/StayMap-Landing_Page/refs/heads/main/taylor.jpeg" alt="Taylor Swift" />
+  </div>
+  <div class="right">
+    <div class="form-container">
+      <img src="https://raw.githubusercontent.com/The-Rumbling/StayMap-Landing_Page/refs/heads/main/starymaplogo.png" class="logo" alt="StayMap Logo" />
+      <h2>¡Bienvenido a <span class="purple">StayMap</span>!</h2>
+      <form>
+        <label>Username o email</label>
+        <input type="text" placeholder="Ingresa tu usuario o email" [(ngModel)]="email" required [ngModelOptions]="{standalone: true}"/>
+
+        <label>Contraseña</label>
+        <input type="password" placeholder="Ingresa tu contraseña" [(ngModel)]="password" required [ngModelOptions]="{standalone: true}"/>
+
+        <button class="link" (click)="onLogin()">Iniciar sesión</button>
+        <div class="divider"><span>—————— o ——————</span></div>
+        <button class="google-btn">Inicia sesión con Google</button>
+        <button class="facebook-btn">Inicia sesión con Facebook</button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
