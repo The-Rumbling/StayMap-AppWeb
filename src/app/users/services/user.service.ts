@@ -20,9 +20,7 @@ export class UserService extends BaseService<User>{
   }
 
   login(email:string, password:string) {
-    const awr =${this.resourcePath()}?email=${email}&password=${password};
-    console.log('lolazo', awr);
-    return this.http.get<User[]>(${this.resourcePath()}?email=${email}&password=${password}, this.httpOptions).pipe(
+    return this.http.get<User[]>(`${this.resourcePath()}?email=${email}&password=${password}`, this.httpOptions).pipe(
       retry(2), catchError(this.handleError), map(users => {
         if (users.length) {
           const user = users[0];
@@ -48,12 +46,3 @@ export class UserService extends BaseService<User>{
     return !!this.getCurrentUser();
   }
 }
-Estos son mis environments
-
-export const environment = {
-  production: true,
-  // Server Base URL for Rest API
-  serverBaseUrl: '',
-   communityEndpointPath: 'assets/data/db.json',
-  usersEndpointPath: 'assets/data/db.json'
-};
