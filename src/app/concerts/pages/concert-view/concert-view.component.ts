@@ -1,29 +1,33 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {NgForOf} from '@angular/common';
-import {GoogleMap, MapInfoWindow, MapMarker} from '@angular/google-maps';
-import {Concert} from '../../model/concert.entity';
-import {ConcertApiService} from '../../services/concert-api.service';
-import {MatToolbar} from '@angular/material/toolbar';
-import {MatAnchor} from '@angular/material/button';
-import {RouterLink} from '@angular/router';
-import {ConcertListComponent} from '../../components/concert-list/concert-list.component';
+import { Component, OnInit, inject } from '@angular/core';
+import { NgForOf } from '@angular/common';
+import { Concert } from '../../model/concert.entity';
+import { ConcertApiService } from '../../services/concert-api.service';
+import { ConcertListComponent } from '../../components/concert-list/concert-list.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-concert-view',
+  standalone: true,
   imports: [
+    NgForOf,
+    RouterLink,
+    MatToolbarModule,
+    MatButtonModule,
     ConcertListComponent
   ],
   templateUrl: './concert-view.component.html',
   styleUrl: './concert-view.component.css'
 })
 export class ConcertViewComponent implements OnInit {
-  concerts: Array<Concert>=[];
-  private concertUrl=inject(ConcertApiService);
-  ngOnInit() :void{
-    this.concertUrl.getConcerts().subscribe(concerts=>{
-      console.log(concerts);
-      this.concerts=concerts;
-      console.log(this.concerts);
+  concerts: Array<Concert> = [];
+  private concertService = inject(ConcertApiService);
+
+  ngOnInit(): void {
+    this.concertService.getConcerts().subscribe(concerts => {
+      console.log('🎵 Conciertos cargados:', concerts);
+      this.concerts = concerts;
     });
   }
 }
