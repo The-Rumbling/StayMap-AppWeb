@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {UserService} from '../../../users/services/user.service';
 import {Concert} from '../../model/concert.entity';
-import {ConcertService} from '../../services/concert.service';
+import {ConcertApiService} from '../../services/concert-api.service';
 import {MatButton} from '@angular/material/button';
 import {NgForOf, NgIf} from '@angular/common';
 import {ConcertCreateAndEditComponent} from '../../components/concert-create-and-edit/concert-create-and-edit.component';
@@ -23,7 +23,7 @@ export class ConcertManagementComponent implements OnInit{
   protected isArtist:boolean = false;
   protected currentUser:User=new User({});
   protected concertData: Concert=new Concert({});
-  protected concertService: ConcertService = inject(ConcertService);
+  protected concertService: ConcerApiService = inject(ConcertApiService);
   concerts: Array<Concert>=[];
   protected selectedGenres: string[]=[];
   protected genres:string[] = [
@@ -44,7 +44,7 @@ export class ConcertManagementComponent implements OnInit{
   }
 
   private getAllConcerts() {
-    this.concertService.getAll().subscribe((response: Array<Concert>) => {
+    this.concertService.getConcerts().subscribe((response: Array<Concert>) => {
       console.log(' Conciertos cargados desde el JSON:', response);
       this.concerts = response;
     });
