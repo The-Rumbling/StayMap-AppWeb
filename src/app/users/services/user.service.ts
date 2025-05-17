@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { BaseService } from '../../shared/services/base.service';
 import { User } from '../model/user.entity';
-import { BehaviorSubject, catchError, map, retry } from 'rxjs';
+import { BehaviorSubject, catchError, map, of, retry } from 'rxjs';
 
 const usersResourceEndpointPath = environment.usersEndpointPath || '';
 
@@ -19,26 +19,25 @@ export class UserService extends BaseService<User> {
     this.resourceEndpoint = usersResourceEndpointPath;
   }
 
-  login(email: string, password: string) {
+  override login(email: string, password: string) {
     return this.http.get<any>(this.resourcePath(), this.httpOptions).pipe(
-      retry(2),
-      catchError(this.handleError),
       map(data => {
-        const users: User[] = data.users || [];
+        const usersArray = Array.isArray(data)
+          ? data
+          : data.users || [];
 
-        const matchedUser = users.find(
-          user => user.email === email && user.password === password
-        );
+        const user = usersArray.find((u: any) => u.email === email && u.password === password);
 
-        if (matchedUser) {
-          const user = new User(matchedUser);
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          return user;
+        if (user) {
+          const parsedUser = new User(user);
+          localStorage.setItem('currentUser', JSON.stringify(parsedUser));
+          this.currentUserSubject.next(parsedUser);
+          return parsedUser;
         }
 
         return null;
-      })
+      }),
+      catchError(this.handleError)
     );
   }
 
