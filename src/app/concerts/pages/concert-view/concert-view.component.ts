@@ -16,10 +16,10 @@ import {HttpClient} from '@angular/common/http';
     ConcertCreateAndEditComponent,
     NgForOf
   ],
-  templateUrl: './concert-management.component.html',
-  styleUrl: './concert-management.component.css'
+  templateUrl: './concert-view.component.html',
+  styleUrl: './concert-view.component.css'
 })
-export class ConcertManagementComponent implements OnInit{
+export class ConcertViewComponent implements OnInit{
   protected isArtist:boolean = false;
   protected currentUser:User=new User({});
   protected concertData: Concert=new Concert({});
