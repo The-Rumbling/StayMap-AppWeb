@@ -1,0 +1,61 @@
+<div class="perfil-container">
+  <section class="sidebar">
+    <h2>Mi perfil: <span class="type">{{ currentUser.type.toUpperCase() }}</span></h2>
+    <img
+      [src]="currentUser.profileImage"
+      alt="Foto de perfil"
+      class="profile-pic"
+    />
+    <ng-template #noPhoto>
+      <div class="profile-placeholder">Sin foto</div>
+    </ng-template>
+
+    <h3>{{ currentUser.name }}</h3>
+
+  </section>
+
+  <section class="concerts">
+    <div class="concert-box">
+      <h3>Conciertos asistidos</h3>
+      <ul>
+        <li>
+          LOUIS TOMLINSON <br />
+          <span>26 DE MAYO 2024</span>
+        </li>
+        <li>
+          STRAY KIDS <br />
+          <span>09 DE ABRIL 2025</span>
+        </li>
+        <li>
+          HARRY STYLES <br />
+          <span>29 DE NOV 2022</span>
+        </li>
+        <li>
+          COLDPLAY <br />
+          <span>15 DE NOV 2022</span>
+        </li>
+        <li>
+          ZAYN <br />
+          <span>21 DE ENERO 2025</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="concert-box">
+      <h3>Conciertos por asistir</h3>
+      <ul>
+        <li>
+          DUA LIPA <br />
+          <span>15 DE NOV 2025</span>
+        </li>
+        <li>
+          WE THEN LION <br />
+          <span>23 DE MAYO 2025</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+</div>
+<div class="logout-section">
+  <button class="logout-btn" (click)="onLogout()">Cerrar Sesión</button>
+</div>
