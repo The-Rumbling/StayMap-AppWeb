@@ -1,0 +1,30 @@
+<h2> {{ 'New Concert' }} </h2>
+<div class="form-portion">
+  <form #concertForm="ngForm" (ngSubmit)="onSubmit()" class="form-row">
+    <mat-form-field id="artist-name-form-field">
+      <input [(ngModel)]="concert.artist.name" matInput name="artist-name" placeholder="Artist Name" required>
+    </mat-form-field>
+    <mat-form-field id="artist-genre-form-field">
+      <input [(ngModel)]="concert.artist.genre" matInput name="artist-genre" placeholder="Artist Genre" required>
+    </mat-form-field>
+    <mat-form-field id="image-form-field">
+      <input [(ngModel)]="concert.image" matInput name="image" placeholder="Image URL" required>
+    </mat-form-field>
+    <mat-form-field id="description-form-field">
+      <input [(ngModel)]="concert.description" matInput name="description" placeholder="Description">
+    </mat-form-field>
+    <mat-form-field id="date-form-field">
+      <input [(ngModel)]="concert.date" matInput name="date" placeholder="Date" required>
+    </mat-form-field>
+    <mat-form-field id="venue-name-form-field">
+      <input [(ngModel)]="concert.venue.name" matInput name="venue-name" placeholder="Venue's name" required>
+    </mat-form-field>
+    <mat-form-field id="venue-address-form-field">
+      <input [(ngModel)]="concert.venue.address" matInput name="venue-address" placeholder="Venue's address" required>
+    </mat-form-field>
+    <ng-container>
+      <button color="primary" mat-raised-button>{{ 'Add' }}</button>
+      <button (click)="onCancel()" color="warn" mat-raised-button>Cancel</button>
+    </ng-container>
+  </form>
+</div>
