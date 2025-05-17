@@ -17,12 +17,9 @@ import {User} from './users/model/user.entity';
 })
 export class AppComponent {
   title = 'learning-center';
-
   currentUser:User = new User({});
   isLoggedIn:boolean = false;
-
   showToolbar = true;
-
   options = [
     {link: 'concerts', label: 'Concerts' },
     { link: 'map', label: 'Map' },
@@ -39,7 +36,7 @@ export class AppComponent {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        this.showToolbar = !event.url.includes('/login');
+        this.showToolbar = !(event.url.includes('/login') || event.url.includes('/register'));
       });
   }
 }
