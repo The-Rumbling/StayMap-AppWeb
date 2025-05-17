@@ -5,9 +5,9 @@ export class ConcertAssembler {
 
   static toEntityFromResource(resource: ConcertResource): Concert {
     return {
-      id: Number(resource.id),
-      artistName: [resource.artist?.name || ''],
-      genre: [resource.artist?.genre || ''],
+      id: resource.id,
+      artistName: [resource.artist.name], // convertimos en array
+      genre: [resource.artist.genre],     // convertimos en array
       description: resource.description,
       image: resource.image,
       date: resource.date,
