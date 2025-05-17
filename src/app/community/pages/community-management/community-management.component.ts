@@ -1,135 +1,106 @@
-import {AfterViewInit, Component, inject, OnInit, ViewChild} from '@angular/core';
-
-import {
-  MatCell, MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
-  MatTable,
-  MatTableDataSource
-} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort, MatSortHeader} from '@angular/material/sort';
-import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
-import {MatIcon} from '@angular/material/icon';
-import {CommunityService} from '../../services/community.service';
-import {Community} from '../../model/community.entity';
-import {
-  CommunityCreateAndEditComponent
-} from '../../components/community-create-and-edit/community-create-and-edit.component';
-import {MatButton} from '@angular/material/button';
+import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatButton } from '@angular/material/button';
+import { NgForOf, NgIf, NgStyle } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
+import { Community } from '../../model/community.entity';
+import { CommunityService } from '../../services/community.service';
+import { CommunityCreateAndEditComponent } from '../../components/community-create-and-edit/community-create-and-edit.component';
 
 @Component({
   selector: 'app-community-management',
+  standalone: true,
   imports: [
     NgForOf,
     NgStyle,
-    MatButton,
-    CommunityCreateAndEditComponent,
     NgIf,
+    MatButton,
+    CommunityCreateAndEditComponent
   ],
   templateUrl: './community-management.component.html',
   styleUrl: './community-management.component.css'
 })
-export class CommunityManagementComponent implements OnInit, AfterViewInit{
+export class CommunityManagementComponent implements OnInit, AfterViewInit {
   protected communityData!: Community;
-
   protected columnsToDisplay: string[] = ['id', 'name', 'memberQuantity', 'actions'];
-
   protected editMode: boolean = false;
-  protected communityService: CommunityService = inject(CommunityService);
+  protected formVisible = false;
   protected dataSource!: MatTableDataSource<any>;
-  @ViewChild(MatPaginator, {static: false})
-  protected paginator!: MatPaginator;
-  @ViewChild(MatSort)
-  protected sort!: MatSort;
 
+  private communityService = inject(CommunityService);
+
+  @ViewChild(MatPaginator, { static: false }) protected paginator!: MatPaginator;
+  @ViewChild(MatSort) protected sort!: MatSort;
 
   constructor() {
     this.editMode = false;
     this.communityData = new Community({});
     this.dataSource = new MatTableDataSource();
-    console.log(this.communityData);
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   ngOnInit(): void {
     this.getAllCommunities();
   }
-  private getAllCommunities() {
-    this.communityService.getAll().subscribe((response: Array<Community>) => {
-      console.log(' Comunidades cargadas desde el JSON:', response);
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  private getAllCommunities(): void {
+    this.communityService.getAll().subscribe((response: Community[]) => {
+      console.log('✅ Comunidades cargadas:', response);
       this.dataSource.data = response;
     });
   }
-  private createCommunity() {
-    if (!this.communityData.id) {
-      this.communityData.id = Date.now(); // o usa uuid
-    }
 
-    this.communityService.create(this.communityData).subscribe((response: Community) => {
-      this.dataSource.data.push(response);
-      this.dataSource.data = [...this.dataSource.data];
-    });
+  private createCommunity(): void {
+    console.warn('⚠️ No se puede crear comunidades en producción estática.');
+    // Aquí normalmente llamarías this.communityService.create(...)
   }
 
-  private updateCommunity() {
-    let communityToUpdate = this.communityData;
-    this.communityService.update(communityToUpdate.id, communityToUpdate).subscribe((response: Community) => {
-      let index = this.dataSource.data.findIndex((community: Community) => community.id === response.id);
-      this.dataSource.data[index] = response;
-      this.dataSource.data = this.dataSource.data;
-    });
+  private updateCommunity(): void {
+    console.warn('⚠️ No se puede actualizar comunidades en producción estática.');
   }
 
-
-  private deleteCommunity(id: number) {
-    this.communityService.delete(id).subscribe(() => {
-      this.dataSource.data = this.dataSource.data.filter((community: Community) => community.id !== id);
-    });
+  private deleteCommunity(id: number): void {
+    console.warn('⚠️ No se puede eliminar comunidades en producción estática.');
   }
 
-  protected onEditItem(item: Community) {
+  protected onEditItem(item: Community): void {
     this.editMode = true;
     this.communityData = item;
   }
 
-  protected onDeleteItem(item: Community) {
+  protected onDeleteItem(item: Community): void {
     this.deleteCommunity(item.id);
   }
 
-  protected onCancelRequested() {
+  protected onCancelRequested(): void {
     this.resetEditState();
     this.formVisible = false;
   }
 
-  private resetEditState() {
-    this.communityData = new Community({});
-    this.editMode = false;
-  }
-
-  protected onCommunityAddRequested(item: Community) {
+  protected onCommunityAddRequested(item: Community): void {
     this.communityData = item;
     this.createCommunity();
     this.resetEditState();
   }
 
-  protected onCommunityUpdateRequested(item: Community) {
+  protected onCommunityUpdateRequested(item: Community): void {
     this.communityData = item;
     this.updateCommunity();
     this.formVisible = false;
   }
 
-  protected formVisible = false;
-
-  protected onAddCommunityClicked() {
+  protected onAddCommunityClicked(): void {
     this.resetEditState();
     this.formVisible = true;
   }
 
-
+  private resetEditState(): void {
+    this.communityData = new Community({});
+    this.editMode = false;
+  }
 }
