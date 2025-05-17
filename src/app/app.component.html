@@ -21,7 +21,9 @@
   <div class="button-login-container">
     <button mat-raised-button class="login-button" [routerLink]="['/login']" *ngIf="!isLoggedIn">Inicia sesión</button>
   </div>
-  <img class="user-profile-image" [alt]="currentUser.name" [src]="currentUser.profileImage" *ngIf="isLoggedIn"/>
+  <button mat-raised-button [routerLink]="['/profile']" *ngIf="isLoggedIn">
+    <img class="user-profile-image" [alt]="currentUser.name" [src]="currentUser.profileImage"/>
+  </button>
 </mat-toolbar>
 <main class="main-content">
   <router-outlet></router-outlet>
