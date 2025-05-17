@@ -1,26 +1,29 @@
 export class Concert {
   id: number;
-  artistName: string[];
-  genre: string[];
+  artist: {
+    name: string,
+    genre: string
+  };
   image: string;
   description: string;
   date: string;
-  venueName: string;
-  venueAddress: string;
-  venueLocation:{
-    lat: number,
-    lng: number
+  venue: {
+    name:string,
+    address: string,
+    location: {
+      lat: number,
+      lng: number
+    }
   };
+  status: string;
 
-  constructor() {
-    this.id = 0;
-    this.artistName = [];
-    this.genre = [];
-    this.image = '';
-    this.description = '';
-    this.date = '';
-    this.venueName = '';
-    this.venueAddress = '';
-    this.venueLocation = {lat: 0, lng: 0};
+  constructor(concert:{id?:number,artist?:{name:string,genre:string},image?:string,description?:string,date?:string,venue?:{name:string,address:string,location:{lat:number,lng:number}}, status?:string}) {
+    this.id=concert.id || 0;
+    this.artist=concert.artist || {name:'',genre:''};
+    this.image=concert.image || '';
+    this.description=concert.description || '';
+    this.date=concert.date || '';
+    this.venue=concert.venue || {name:'',address:'',location:{lat:0,lng:0}};
+    this.status=concert.status || '';
   }
 }
