@@ -1,47 +1,46 @@
 import { Injectable } from '@angular/core';
-import {environment} from '../../../environments/environment';
-import {BaseService} from '../../shared/services/base.service';
-import {User} from '../model/user.entity';
-import {BehaviorSubject, catchError, map, retry} from 'rxjs';
-
-const usersResourceEndpointPath=environment.usersEndpointPath||'';
+import { BaseService } from '../../shared/services/base.service';
+import { User } from '../model/user.entity';
+import { BehaviorSubject, catchError, map, of, retry } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends BaseService<User>{
+export class UserService extends BaseService<User> {
 
   private currentUserSubject = new BehaviorSubject<any>(this.getCurrentUser());
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor() {
     super();
-    this.resourceEndpoint=usersResourceEndpointPath;
+    // Reemplaza con tu ruta real si cambia
+    this.resourceEndpoint = '/assets/data/db.json';
   }
 
-  login(email:string, password:string) {
-    const awr =${this.resourcePath()}?email=${email}&password=${password};
-    console.log('lolazo', awr);
-    return this.http.get<User[]>(${this.resourcePath()}?email=${email}&password=${password}, this.httpOptions).pipe(
-      retry(2), catchError(this.handleError), map(users => {
-        if (users.length) {
-          const user = users[0];
+  override login(email: string, password: string) {
+    return this.http.get<any>(this.resourcePath(), this.httpOptions).pipe(
+      map(data => {
+        const users = data.users || [];
+        const user = users.find((u: any) => u.email === email && u.password === password);
+        if (user) {
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
           return user;
         }
         return null;
-      })
+      }),
+      catchError(this.handleError)
     );
   }
 
   logout() {
-    sessionStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
 
   getCurrentUser() {
-    return JSON.parse(sessionStorage.getItem('currentUser') || 'null');
+    return JSON.parse(localStorage.getItem('currentUser') || 'null');
   }
 
   isLoggedIn(): boolean {
