@@ -8,14 +8,14 @@ import { Concert } from '../model/concert.entity';
   providedIn: 'root'
 })
 export class ConcertApiService {
-  private concertUrl: string = 'assets/data/db.json'; // ✅ Ahora apunta al JSON estático
+  private concertUrl: string = 'assets/data/db.json'; // correcto
 
   constructor(private http: HttpClient) { }
 
   getConcerts() {
     return this.http.get<any>(this.concertUrl).pipe(
       map(response => {
-        const concertsData = response.concerts?.data || [];
+        const concertsData = response.concerts || []; // ✅ corregido aquí
         return ConcertAssembler.toEntitiesFromResponse({ data: concertsData });
       })
     );
