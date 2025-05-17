@@ -19,19 +19,22 @@ export class UserService extends BaseService<User>{
     this.resourceEndpoint=usersResourceEndpointPath;
   }
 
-  login(email:string, password:string) {
-    return this.http.get<User[]>(`${this.resourcePath()}?email=${email}&password=${password}`, this.httpOptions).pipe(
-      retry(2), catchError(this.handleError), map(users => {
-        if (users.length) {
-          const user = users[0];
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          return user;
-        }
-        return null;
-      })
-    );
-  }
+login(email:string, password:string) {
+  return this.http.get<any>(this.resourcePath(), this.httpOptions).pipe(
+    map(data => {
+      console.log("📦 Data completa recibida del JSON:", data); // ✅ muestra todo el JSON
+      const users = data.users || [];
+      const user = users.find((u: User) => u.email === email && u.password === password);
+      if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        return user;
+      }
+      return null;
+    }),
+    catchError(this.handleError)
+  );
+}
 
   logout() {
     sessionStorage.removeItem('currentUser');
