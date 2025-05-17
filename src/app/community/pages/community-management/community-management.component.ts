@@ -18,8 +18,6 @@ import {
   CommunityCreateAndEditComponent
 } from '../../components/community-create-and-edit/community-create-and-edit.component';
 import {MatButton} from '@angular/material/button';
-import {UserService} from '../../../users/services/user.service';
-import {User} from '../../../users/model/user.entity';
 
 @Component({
   selector: 'app-community-management',
@@ -34,7 +32,6 @@ import {User} from '../../../users/model/user.entity';
   styleUrl: './community-management.component.css'
 })
 export class CommunityManagementComponent implements OnInit, AfterViewInit{
-  isLoggedIn:boolean = false;
   protected communityData!: Community;
 
   protected columnsToDisplay: string[] = ['id', 'name', 'memberQuantity', 'actions'];
@@ -47,10 +44,8 @@ export class CommunityManagementComponent implements OnInit, AfterViewInit{
   @ViewChild(MatSort)
   protected sort!: MatSort;
 
-  constructor(private userService: UserService) {
-    this.userService.currentUser$.subscribe(user => {
-      this.isLoggedIn=!!user;
-    });
+
+  constructor() {
     this.editMode = false;
     this.communityData = new Community({});
     this.dataSource = new MatTableDataSource();
@@ -73,11 +68,12 @@ export class CommunityManagementComponent implements OnInit, AfterViewInit{
   }
   private createCommunity() {
     if (!this.communityData.id) {
-      this.communityData.id = Date.now();
+      this.communityData.id = Date.now(); // o usa uuid
     }
 
-    this.communityService.create(this.communityData).subscribe(() => {
-      this.getAllCommunities();
+    this.communityService.create(this.communityData).subscribe((response: Community) => {
+      this.dataSource.data.push(response);
+      this.dataSource.data = [...this.dataSource.data];
     });
   }
 
@@ -134,4 +130,6 @@ export class CommunityManagementComponent implements OnInit, AfterViewInit{
     this.resetEditState();
     this.formVisible = true;
   }
+
+
 }
